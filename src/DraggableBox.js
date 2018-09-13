@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
-import { DragSource } from 'react-dnd';
+import { DropTarget, DragSource } from 'react-dnd';
 import Box from './Box';
 
 class DraggableBox extends Component {
   render() {
-    const { connectDragSource, isDragging } = this.props;
+    const { connectDragSource, connectDropTarget, isDragging } = this.props;
     return connectDragSource(
-      <div>
-        <Box
-          text={this.props.text}
-          bgColor={this.props.bgColor}
-          style={{opacity: isDragging ? 0.5 : 1}}
-        />
-      </div>
+      connectDropTarget(
+        <div>
+          <Box
+            text={this.props.text}
+            bgColor={this.props.bgColor}
+            style={{opacity: isDragging ? 0.5 : 1}}
+          />
+        </div>
+      )
     );
   }
 }
@@ -20,15 +22,32 @@ class DraggableBox extends Component {
 
 const dragSource = {
   beginDrag(props) {
+    console.log('Begin drag');
     return {};
   }
 };
 
-export default DragSource(
+const dropTarget = {
+  drop(props, monitor) {
+    console.log('Drop');
+  }
+};
+
+DraggableBox = DragSource(
   'Tmp.Box',
   dragSource,
   (connect, monitor) => ({
       connectDragSource: connect.dragSource(),
-      isDragging: monitor.isDragging()
+      isDragging: monitor.isDragging(),
   })
 )(DraggableBox);
+
+DraggableBox = DropTarget(
+  'Tmp.Box',
+  dropTarget,
+  connect => ({
+    connectDropTarget: connect.dropTarget(),
+  })
+)(DraggableBox);
+
+export default DraggableBox;
