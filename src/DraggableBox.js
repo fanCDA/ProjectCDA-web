@@ -4,13 +4,19 @@ import Box from './Box';
 
 class DraggableBox extends Component {
   render() {
-    const { connectDragSource, connectDropTarget, isDragging } = this.props;
+    const { connectDragSource, connectDropTarget, isDragging, isOver, canDrop } = this.props;
+    let bgColor = this.props.bgColor;
+
+    if (isOver && canDrop) {
+      bgColor = 'rgb(166, 202, 240)';
+    }
+
     return connectDragSource(
       connectDropTarget(
         <div>
           <Box
             text={this.props.text}
-            bgColor={this.props.bgColor}
+            bgColor={bgColor}
             style={{opacity: isDragging ? 0.5 : 1}}
           />
         </div>
@@ -44,8 +50,10 @@ DraggableBox = DragSource(
 DraggableBox = DropTarget(
   'Tmp.Box',
   dropTarget,
-  connect => ({
+  (connect, monitor) => ({
     connectDropTarget: connect.dropTarget(),
+    isOver: monitor.isOver(),
+    canDrop: monitor.canDrop(),
   })
 )(DraggableBox);
 
