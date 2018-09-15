@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import Box from './Box';
 import DraggableBox from './DraggableBox';
 
 const DATA = [
-  { text: 'Box 1', bgColor: 'red' },
-  { text: 'Box 2', bgColor: 'green' },
-  { text: 'Box 3', bgColor: 'blue' },
-  { text: 'Box 4', bgColor: 'yellow' },
+  { text: 'Box 0', bgColor: 'red' },
+  { text: 'Box 1', bgColor: 'green' },
+  { text: 'Box 2', bgColor: 'blue' },
+  { text: 'Box 3', bgColor: 'yellow' },
+  { text: 'Box 4', bgColor: 'purple' },
+  { text: 'Box 5', bgColor: 'pink' },
+  { text: 'Box 6', bgColor: 'gray' },
 ];
 
 class TestField extends Component {
@@ -21,33 +23,33 @@ class TestField extends Component {
     return (
       <div>
         <div style={{ display: 'flex' }}>
-          {this.generateDraggableBoxes()}
-        </div>
-        <div style={{ display: 'flex' }}>
-          {this.generateBoxes()}
+          {this._generateDraggableBoxes()}
         </div>
       </div>
     );
   }
 
-  generateDraggableBoxes() {
+  _generateDraggableBoxes() {
     return this.state.data.map(({ text, bgColor }, index) => (
       <DraggableBox
         key={index}
+        index={index}
         text={text}
         bgColor={bgColor}
+        onDrop={item => this._handleDrop(index, item)}
       />
     ));
   }
 
-  generateBoxes() {
-    return this.state.data.map(({ text, bgColor }, index) => (
-      <Box
-        key={index}
-        text={text}
-        bgColor={bgColor}
-      />
-    ));
+  _handleDrop(dest_index, item) {
+    const { index } = item;
+    let newData = this.state.data.concat();
+    newData[index] = this.state.data[dest_index];
+    newData[dest_index] = this.state.data[index];
+
+    this.setState({
+      data: newData
+    });
   }
 }
 

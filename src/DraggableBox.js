@@ -20,16 +20,15 @@ class DraggableBox extends Component {
 }
 
 
-const dragSource = {
-  beginDrag(props) {
-    console.log('Begin drag');
-    return {};
+const dropTarget = {
+  drop(props, monitor, component) {
+    props.onDrop(monitor.getItem())
   }
 };
 
-const dropTarget = {
-  drop(props, monitor) {
-    console.log('Drop');
+const dragSource = {
+  beginDrag(props) {
+    return { index: props.index };
   }
 };
 
