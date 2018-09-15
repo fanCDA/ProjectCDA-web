@@ -43,6 +43,7 @@ class TestField extends Component {
 
   _handleDrop(dest_index, item) {
     const { index } = item;
+    if (index === dest_index) return;
     let newData = this.state.data.concat();
     newData[index] = this.state.data[dest_index];
     newData[dest_index] = this.state.data[index];
