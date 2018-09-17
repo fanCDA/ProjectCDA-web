@@ -37,6 +37,7 @@ class TestField extends Component {
         text={text}
         bgColor={bgColor}
         onDrop={item => this._handleDrop(index, item)}
+        onTextUpdate={newText => this._handleTextUpdate(index, newText)}
       />
     ));
   }
@@ -47,6 +48,15 @@ class TestField extends Component {
     let newData = this.state.data.concat();
     newData[index] = this.state.data[dest_index];
     newData[dest_index] = this.state.data[index];
+
+    this.setState({
+      data: newData
+    });
+  }
+
+  _handleTextUpdate(index, newText) {
+    let newData = this.state.data.concat();
+    newData[index].text = newText;
 
     this.setState({
       data: newData
