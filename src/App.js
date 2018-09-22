@@ -39,6 +39,7 @@ class App extends Component {
     // console.log(e);
 
     e.target.style.opacity = 0.4;
+    localStorage.dragSource = 'Start the fun';
   }
 
   handleDragEnter(e) {
@@ -73,6 +74,11 @@ class App extends Component {
 
     e.preventDefault();
     e.target.classList.remove('over');
+
+    var data = localStorage.dragSource;
+    console.log(data);
+    localStorage.dropTarget = 'MidWay';
+
     return false;
   }
 
@@ -82,6 +88,11 @@ class App extends Component {
     // console.log(e);
 
     e.target.style.opacity = 1;
+
+    var data = localStorage.dropTarget;
+    console.log(data);
+
+    localStorage.clear();
   }
 }
 
