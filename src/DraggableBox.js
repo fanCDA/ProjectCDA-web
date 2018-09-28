@@ -26,6 +26,8 @@ class DraggableBox extends Component {
 
     e.target.style.opacity = 0.4;
     localStorage.dragSource = 'Start the fun';
+
+    sessionStorage.setItem('dragState', 'DRAGGING');
   }
 
   handleDragEnter(e) {
@@ -63,7 +65,14 @@ class DraggableBox extends Component {
 
     var data = localStorage.dragSource;
     console.log(data);
-    localStorage.dropTarget = 'MidWay';
+
+    if (sessionStorage.dragState === 'DRAGGING') {
+      console.log('-={ Same session. SWAP! }=-');
+      sessionStorage.removeItem('dragState');
+    } else {
+      console.log('-={ Not the same session. Save data in localStorage }=-');
+      localStorage.dropTarget = 'Pass me to 1st window';
+    }
 
     return false;
   }
@@ -74,11 +83,18 @@ class DraggableBox extends Component {
     // console.log(e);
 
     e.target.style.opacity = 1;
+    
+    if (localStorage.dropTarget) {
+      console.log('-={ We have some data from other window }=-');
 
-    var data = localStorage.dropTarget;
-    console.log(data);
+      var data = localStorage.dropTarget;
+      console.log(data);
 
-    localStorage.clear();
+      localStorage.removeItem('dropTarget');
+      // localStorage.clear();
+    } else {
+      console.log('-={ It was same session, we good here }=-');
+    }
   }
 }
 
