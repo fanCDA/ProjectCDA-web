@@ -26,8 +26,9 @@ class App extends Component {
             <DraggableBox
               key={index}
               index={index}
-              header={value}
+              data={value}
               swapHandler={this.swap}
+              setData={this.setData}
             />
           )
         })}
@@ -35,11 +36,21 @@ class App extends Component {
     );
   }
 
-  swap = (srcIndx, destIndx) => {
-    console.log(`swap: ${srcIndx} => ${destIndx}`);
+  swap = (srcIndex, destIndex) => {
+    console.log(`swap: ${srcIndex} => ${destIndex}`);
     let newData = this.state.data.concat();
-    newData[srcIndx] = this.state.data[destIndx];
-    newData[destIndx] = this.state.data[srcIndx];
+    newData[srcIndex] = this.state.data[destIndex];
+    newData[destIndex] = this.state.data[srcIndex];
+
+    this.setState({
+      data: newData
+    });
+  }
+
+  setData = (index, data) => {
+    console.log(`set ${index} with: ${data}`);
+    let newData = this.state.data.concat();
+    newData[index] = data;
 
     this.setState({
       data: newData

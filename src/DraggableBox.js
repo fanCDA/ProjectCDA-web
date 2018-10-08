@@ -14,7 +14,7 @@ class DraggableBox extends Component {
         onDrop={e => this.handleOnDrop(e)}
         onDragEnd={e => this.handleOnDragEnd(e)}
       >
-        <Box header={this.props.header} />
+        <Box header={this.props.data} />
       </div>
     );
   }
@@ -26,7 +26,8 @@ class DraggableBox extends Component {
 
     e.target.style.opacity = 0.4;
     e.dataTransfer.setData('sourceIndex', this.props.index);
-    localStorage.dragSource = 'Start the fun';
+    e.dataTransfer.setData('sourceData', this.props.data);
+    // localStorage.dragSource = this.props.data;
 
     sessionStorage.setItem('dragState', 'DRAGGING');
   }
@@ -78,7 +79,11 @@ class DraggableBox extends Component {
       }
     } else {
       console.log('-={ Not the same session. Save data in localStorage }=-');
-      localStorage.dropTarget = 'Pass me to 1st window';
+      let sourceData = e.dataTransfer.getData('sourceData');
+      console.log("sourceData:");
+      console.log(sourceData);
+      this.props.setData(this.props.index, sourceData);
+      localStorage.dropData = this.props.data;
     }
 
     return false;
@@ -91,13 +96,15 @@ class DraggableBox extends Component {
 
     e.target.style.opacity = 1;
     
-    if (localStorage.dropTarget) {
+    if (localStorage.dropData) {
       console.log('-={ We have some data from other window }=-');
 
-      var data = localStorage.dropTarget;
-      console.log(data);
+      var dropData = localStorage.dropData;
+      console.log(dropData);
 
-      localStorage.removeItem('dropTarget');
+      this.props.setData(this.props.index, dropData);
+
+      localStorage.removeItem('dropData');
       // localStorage.clear();
     } else {
       console.log('-={ It was same session, we good here }=-');
