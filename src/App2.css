@@ -6,11 +6,26 @@
   /* grid-column-gap: 10px; */
   /* grid-row-gap: 10px; */
   grid-gap: 10px;
-  background-color: tomato;
+  /* background-color: tomato; */
+  border: 2px solid tomato;
 }
 
 .grid-item {
   background-color: blue;
-  border: 1px solid black;
-  min-height: 100px;
+  border: 2px solid black;
+  height: 150px;
+}
+
+
+.grid-container-2 {
+  height: 100%;
+  display: flex;
+  /* background-color: green; */
+  border: 2px solid green;
+}
+
+.grid-item-2 {
+  flex: 1;
+  /* background-color: brown; */
+  border: 2px solid brown;
 }
