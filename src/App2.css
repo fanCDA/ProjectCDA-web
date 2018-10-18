@@ -31,3 +31,12 @@
   /* background-color: brown; */
   border: 2px solid brown;
 }
+
+
+.single-page-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  background-color: darkorange;
+}
