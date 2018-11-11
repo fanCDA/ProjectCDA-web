@@ -1,17 +1,72 @@
 import React, { Component } from 'react';
+import DATA from'./data/model';
 import './App2.css';
 
 class App extends Component {
   render() {
-    let items = [];
-    for(let i=0; i<50; i++) {
-      items.push( this.getItem(i) );
-    }
+    // let items = [];
+    // for(let i=0; i<50; i++) {
+    //   items.push( this.getItem(i) );
+    // }
     return (
       <div className="grid-container">
-        {items}
+        { DATA.Podwojne.map((data, index) => this.getPodwojnaStrona(data, index)) }
       </div>
     );
+  }
+
+  getPodwojnaStrona(data, indexPodwojnej) {
+    return (
+      <div className="grid-item" key={data.id}>
+        <div className="grid-container-2">
+          <div className="grid-item-2">
+            {this.getPojedynczaStrona(data.Strony[0], indexPodwojnej, 0)}
+          </div>
+          <div className="grid-item-2">
+            {this.getPojedynczaStrona(data.Strony[1], indexPodwojnej, 1)}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  getPojedynczaStrona(data, indexPodwojnej, indexPojedynczej) {
+    // console.log(data);
+    return(
+      <div className="single-page-container">
+        { data.CzesciStrony.map((data, index) => this.getCzescStrony(data, indexPodwojnej, indexPojedynczej, index)) }
+      </div>
+    );
+  }
+
+  getCzescStrony(data, indexPodwojnej, indexPojedynczej, indexCzesci) {
+    // console.log(data, indexPodwojnej, indexPojedynczej, indexCzesci);
+    return (
+      <div
+        key={`${indexPodwojnej},${indexPojedynczej},${indexCzesci}`}
+        style={{
+          flex: 1,
+          backgroundColor: this.getBgColor(data.bg)
+        }}
+      >
+        {data.text}
+      </div>
+    );
+  }
+
+  getBgColor(i) {
+    switch(i) {
+      case 0:
+        return'orange';
+      case 1:
+        return'yellow';
+      case 2:
+        return'pink';
+      case 3:
+        return'blue';
+      default:
+        return'green';
+    }
   }
 
   getItem(i) {
