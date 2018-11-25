@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
+import DraggableBox from './DraggableBox';
 import DATA from'./data/model';
 import './App2.css';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      data: DATA
+    }
+  }
+  
   render() {
     // let items = [];
     // for(let i=0; i<50; i++) {
@@ -10,7 +19,7 @@ class App extends Component {
     // }
     return (
       <div className="grid-container">
-        { DATA.Podwojne.map((data, index) => this.getPodwojnaStrona(data, index)) }
+        { this.state.data.Podwojne.map((data, index) => this.getPodwojnaStrona(data, index)) }
       </div>
     );
   }
@@ -40,18 +49,61 @@ class App extends Component {
   }
 
   getCzescStrony(data, indexPodwojnej, indexPojedynczej, indexCzesci) {
+    const key = `${indexPodwojnej},${indexPojedynczej},${indexCzesci}`;
     // console.log(data, indexPodwojnej, indexPojedynczej, indexCzesci);
+    // return (
+    //   <div
+    //     key={`${indexPodwojnej},${indexPojedynczej},${indexCzesci}`}
+    //     style={{
+    //       flex: 1,
+    //       backgroundColor: this.getBgColor(data.bg)
+    //     }}
+    //   >
+    //     {data.text}
+    //   </div>
+    // );
+
     return (
-      <div
-        key={`${indexPodwojnej},${indexPojedynczej},${indexCzesci}`}
-        style={{
-          flex: 1,
-          backgroundColor: this.getBgColor(data.bg)
-        }}
-      >
-        {data.text}
-      </div>
+      <DraggableBox
+        key={key}
+        index={key}
+        data={data}
+        swapHandler={(srcIndex, destIndex) => this.swapHandler(srcIndex, destIndex)}
+        setData={(index, data) => this.setDataHandler(index, data)}
+      />
     );
+  }
+
+  swapHandler(srcIndex, destIndex) {
+    console.log(`swap: ${srcIndex} => ${destIndex}`);
+
+    let [ srcIndexPodwojnej, srcIndexPojedynczej, srcIndexCzesci ] = srcIndex.split(',');
+    let [ destIndexPodwojnej, destIndexPojedynczej, destIndexCzesci ] = destIndex.split(',');
+
+    // Sorry, I know it's bad because it's actually mutating the state, but gonna deal with it after adding proper state management...
+    let newPodwojne = this.state.data.Podwojne;
+    let tmpDest = this.state.data.Podwojne[srcIndexPodwojnej].Strony[srcIndexPojedynczej].CzesciStrony[srcIndexCzesci];
+    newPodwojne[srcIndexPodwojnej].Strony[srcIndexPojedynczej].CzesciStrony[srcIndexCzesci] = this.state.data.Podwojne[destIndexPodwojnej].Strony[destIndexPojedynczej].CzesciStrony[destIndexCzesci];
+    newPodwojne[destIndexPodwojnej].Strony[destIndexPojedynczej].CzesciStrony[destIndexCzesci] = tmpDest;
+
+    this.setState({
+      data: {
+        Podwojne: newPodwojne
+      }
+    });
+  }
+
+  setDataHandler(index, data) {
+    console.log(`set ${index} with: ${data}`);
+    let [ indexPodwojnej, indexPojedynczej, indexCzesci ] = index.split(',');
+    let newPodwojne = this.state.data.Podwojne;
+    newPodwojne[indexPodwojnej].Strony[indexPojedynczej].CzesciStrony[indexCzesci] = data;
+
+    this.setState({
+      data: {
+        Podwojne: newPodwojne
+      }
+    });
   }
 
   getBgColor(i) {
@@ -88,8 +140,26 @@ class App extends Component {
     if(i === 1) {
       return (
         <div className="single-page-container">
-          <div style={{flex: 1, backgroundColor: 'green'}}>1</div>
-          <div style={{flex: 1, backgroundColor: 'yellow'}}>2</div>
+          <div style={{flex: 1, backgroundColor: 'green'}}>
+            <DraggableBox
+              key={0}
+              page={i}
+              index={0}
+              data={0}
+              swapHandler={(srcIndex, destIndex) => console.log(`swap: ${srcIndex} => ${destIndex}`)}
+              setData={(index, data) => console.log(`set ${index} with: ${data}`)}
+            />
+          </div>
+          <div style={{flex: 1, backgroundColor: 'yellow'}}>
+            <DraggableBox
+              key={1}
+              page={i}
+              index={1}
+              data={1}
+              swapHandler={(srcIndex, destIndex) => console.log(`swap: ${srcIndex} => ${destIndex}`)}
+              setData={(index, data) => console.log(`set ${index} with: ${data}`)}
+            />
+          </div>
         </div>
       );
     } else if(i === 2) {

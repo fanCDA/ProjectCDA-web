@@ -6,6 +6,7 @@
 //         {                       // Obiekt reprezentujacy pojedyncza strone
 //           CzesciStrony: [       // Tablica pojedynczych czesci stron
 //             {                   // Obiekt reprezentujacy czesc pojedynczej strony
+//               bg: 0,
 //               text: ''
 //             }
 //           ]
@@ -19,7 +20,7 @@ const DATA = {
   Podwojne:[]
 };
 
-for(let i=0; i<50; i++) {
+for(let i=0; i<150; i++) {
   let lewa = [{bg: 0, text: '0'}];
   for(let j=0; j<i%4; j++) {
     lewa.push({
