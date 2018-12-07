@@ -15,11 +15,14 @@
   border: 2px solid black;
   height: 150px;
   min-width: 10px;
+
+  display: flex;
 }
 
 
 .grid-container-2 {
-  height: 100%;
+  flex: 1;
+  /* height: 100%; */
   display: flex;
   /* background-color: green; */
   border: 2px solid green;
