@@ -4,6 +4,10 @@ import './DraggableBox.css';
 
 class DraggableBox extends Component {
   render() {
+    const style = {};
+    if (!this.props.isFirstOne) {
+      style["borderTopWidth"] = 0;
+    }
     return (
       <div
         draggable="true"
@@ -15,7 +19,10 @@ class DraggableBox extends Component {
         onDragEnd={e => this.handleOnDragEnd(e)}
         style={{width: '100%', height: '100%'}}
       >
-        <Box header={this.props.data.text} />
+        <Box
+          header={this.props.data.text}
+          style={style}
+        />
       </div>
     );
   }

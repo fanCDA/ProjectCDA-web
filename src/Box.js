@@ -5,7 +5,7 @@ class Box extends Component {
   render() {
     return (
       <div className="column">
-        <header>{this.props.header}</header>
+        <header style={this.props.style}>{this.props.header}</header>
       </div>
     );
   }

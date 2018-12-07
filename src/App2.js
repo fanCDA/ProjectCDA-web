@@ -70,6 +70,7 @@ class App extends Component {
         data={data}
         swapHandler={(srcIndex, destIndex) => this.swapHandler(srcIndex, destIndex)}
         setData={(index, data) => this.setDataHandler(index, data)}
+        isFirstOne={indexCzesci === 0}
       />
     );
   }
